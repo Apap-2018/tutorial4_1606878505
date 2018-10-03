@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<span th:if="${dealer} == null">
+		<title th:text="'Detail Dealer: Tidak Ditemukan'"></title>
+	</span>
+	
+	<span th:unless="${dealer} == null">
+		<title th:text="'Detail Dealer: ' + ${dealer.id}"></title>
+	</span>
+	
+	<style>
+		table {
+		    font-family: arial, sans-serif;
+		    border-collapse: collapse;
+		    width: 90%;
+		}
+		
+		td, th {
+		    border: 1px solid #dddddd;
+		    text-align: left;
+		    padding: 8px;
+		}
+		
+		tr:nth-child(even) {
+		    background-color: #dddddd;
+		}
+	</style>
+</head>
+
+<body>
+	<span th:if="${dealer} == null">
+		<h2>Maaf dealer yang anda cari tidak ditemukan</h2>
+		<a th:href="@{~/}">Kembali</a>
+	</span>
+	
+	<span th:unless="${dealer} == null">
+		<h4 th:text="'Alamat: ' + ${dealer.alamat}"></h4>
+		<h4 th:text="'Telepon: ' + ${dealer.noTelp}"></h4>
+		<a th:href="@{/dealer/delete{id}(id=${dealer.id})}">Delete Dealer</a>
+		<br>
+		<a th:href="@{/dealer/update{id}(id=${dealer.id})}">Update Dealer</a>
+		<br>
+		<a th:href="@{/car/add{id}(id=${dealer.id})}">Tambah Mobil</a>
+		<br>
+		
+		<a th:href="@{~/}">Kembali</a>
+		
+		<h3>List Mobil:</h3>
+		
+		<table align="center">
+			<div th:if="${not #lists.isEmpty(dealer.listCar)}">
+			
+			<tr>
+				<td>Brand</td>
+				<td>Type</td>
+				<td>Price</td>
+				<td>Amount</td>
+				<td>Delete</td>
+				<td>Update</td>
+			</tr>
+			<div th:each="car : ${listCar}">
+				<tr>
+					<td th:text="${car.brand}"></td>
+					<td th:text="${car.type}"></td>
+					<td th:text="${car.price}"></td>
+					<td th:text="${car.amount}"></td>
+					<td>
+						<a th:href="@{/car/delete{id}(id=${car.id})}">Delete Car</a>
+					</td>
+					<td>
+						<a th:href="@{/car/update{id}(id=${car.id})}">Update Car</a>
+					</td>
+				</tr>
+			</div>
+			</div>
+			<div th:unless="${not #lists.isEmpty(dealer.listCar)}">Maaf Tidak Ada Mobil yang Dijual</div>
+		</table>
+	</span>
+	
+</body>
+
+</html>
